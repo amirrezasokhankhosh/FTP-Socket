@@ -41,6 +41,7 @@ print("[LISTENING] socket is listening")
 while True:
 
     c, addr = s.accept()
+    print("")
     print('[NEW CONNECTION] Got connection from', addr)
     command = c.recv(SIZE).decode(FORMAT).split()
 
@@ -53,7 +54,9 @@ while True:
         retr_cmd(c, command[1])
 
     elif command[0] == 'STOR':
-        print("[RETR {}] Client {} wants to store a file.".format(command[1], addr))
+        print("[STOR {}] Client {} wants to store a file.".format(command[1], addr))
         stor_cmd(c, command[1])
 
     c.close()
+    print("[CONNECTION CLOSED]")
+    print("")

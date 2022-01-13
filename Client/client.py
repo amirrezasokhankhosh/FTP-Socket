@@ -21,23 +21,35 @@ def retr_cmd(s, filename):
 
 def stor_cmd(s, filename):
     s.send("STOR {}".format(filename).encode(FORMAT))
-    print("[STIR {}]".format(filename))
+    print("[STOR {}]".format(filename))
     file = open('./{}'.format(filename), 'r')
     data = file.read()
     s.send(data.encode(FORMAT))
     print("[DATA SENT]")
 
 
-s = socket.socket()
+def stablish_connection(func, filename):
+    print("")
+    s = socket.socket()
+    s.connect((IP, PORT))
+    print("[CONNECTED] Clinet is now connected to the server.")
+    if func == "list":
+        list_cmd(s)
+    elif func == "retr":
+        retr_cmd(s, filename)
+    elif func == "stor":
+        stor_cmd(s, filename)
+    s.close()
+    print("[CONNECTION CLOSED]")
+    print("")
+
 
 PORT = 12345
 IP = '127.0.0.1'
 FORMAT = 'utf-8'
 SIZE = 1024
 
-s.connect((IP, PORT))
-print("[CONNECTED] Clinet is now connected to the server.")
 
-retr_cmd(s, "data.txt")
-
-s.close()
+stablish_connection("list", "")
+stablish_connection("retr", "Sepehr.txt")
+stablish_connection("stor", "Amirreza.txt")
